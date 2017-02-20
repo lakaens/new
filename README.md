@@ -1,4 +1,5 @@
 # VINGA GENT
 ##VINGA GENT
 VINGA GENT
-Hola sóc el Marc
+Hola sÃ³c el Marc
+Soc el pinzon
