@@ -3,3 +3,5 @@
 VINGA GENT
 Hola sóc el Marc
 Soc el pinzon
+
+#RICARD FILL DA PUTA SUBNURMAL
