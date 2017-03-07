@@ -28,23 +28,13 @@ int main(int argc, char* args[]) {
 
 
 	SDL_Event event;
-	SDL_Rect bullets[2];
-
-	bullets[0].x = 25;
-	bullets[0].y = 25;
-	bullets[0].h = 50;
-	bullets[0].w = 10;
-
-	bullets[1].x = 25;
-	bullets[1].y = 25;
-	bullets[1].h = 50;
-	bullets[1].w = 10;
+	SDL_Rect bullet[2];
 
 
 
 	bool running = true;
 	bool up = false, down = false, right = false, left=false, space=false;
-	int posbx=0, posby=0;
+	int posbx = 0, posby = 0, cont = 0;
 	while (running) {
 		if (SDL_PollEvent(&event)) {
 			if (event.type == SDL_KEYUP) {
@@ -84,8 +74,11 @@ int main(int argc, char* args[]) {
 					break;
 				case SDLK_SPACE:
 					space = true;
-					posbx = rectangle.x;
-					posby = rectangle.y;
+					bullet[0].x = rectangle.x;
+					bullet[0].y = rectangle.y;
+
+					bullet[1].x = rectangle.x;
+					bullet[1].y = rectangle.y;
 				default:
 					break;
 				}
@@ -102,12 +95,22 @@ int main(int argc, char* args[]) {
 		SDL_SetRenderDrawColor(g_pRenderer, 255, 0, 0, 255);
 		SDL_RenderClear(g_pRenderer);
 
-		if (space == true) {
-			posbx += 5;
-			SDL_SetRenderDrawColor(g_pRenderer, 255, 255, 255, 255);
-			SDL_RenderFillRect(g_pRenderer, &bullets[0]);
+		if (space) {
+			space=false;
+			bullet[cont].x = 25;
+			bullet[cont].y = 25;
+			bullet[cont].w = 20;
+			bullet[cont].h = 10;
+			cont++;
+			if (cont == 2) {
+				cont = 0;
+			}
 		}
-
+		for (int i = 0; i < 2; i++) {
+			bullet[i].x += 5;
+			SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 255, 255);
+			SDL_RenderFillRect(g_pRenderer, &bullet[i]);
+		}
 
 		SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 255, 255);
 		SDL_RenderFillRect(g_pRenderer, &rectangle);
@@ -115,8 +118,7 @@ int main(int argc, char* args[]) {
 		
 	}
 	int surface;
-	SDL_LoadBMP("foton.bpm");
-	SDL_CreateTextureFromSurface
+	
 	SDL_Quit();
 	return EXIT_SUCCESS;
  }
