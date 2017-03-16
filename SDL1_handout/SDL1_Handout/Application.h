@@ -31,8 +31,23 @@ public:
 		
 		// TODO 5: Make sure that if Init() / PreUpdate/Update/PostUpdate/CleanUP return
 		// an exit code App exits correctly.
+		if (Init() == false) 
+		{
+			return false;
+		}
+		if (Update() == false)
+		{
+			return false;
+		}
+		if (CleanUp() == false)
+		{
+			return false;
+		}
+		
 		return true; 
 	}
+
+
 
 	// TODO 4: Add PreUpdate and PostUpdate calls
 
