@@ -22,27 +22,22 @@ public:
 		// it should check if player it ESC key use kbhit()
 		// http://www.cprogramming.com/fod/kbhit.html
 	}
-
+	// TODO 5: Make sure that if Init() / PreUpdate/Update/PostUpdate/CleanUP return
+	// an exit code App exits correctly.
 	// INIT all modules
 	bool Init() 
 	{
-		for(int i = 0; i < NUM_MODULES; ++i)
-			modules[i]->Init();
+		for (int i = 0; i < NUM_MODULES; ++i) {
 		
-		// TODO 5: Make sure that if Init() / PreUpdate/Update/PostUpdate/CleanUP return
-		// an exit code App exits correctly.
-		if (Init() == false) 
-		{
-			return false;
+			if (modules[i]->Init() == false)
+			{
+				return false;
+			}
 		}
-		if (Update() == false)
-		{
-			return false;
-		}
-		if (CleanUp() == false)
-		{
-			return false;
-		}
+		
+		
+		
+		
 		
 		return true; 
 	}
@@ -53,8 +48,12 @@ public:
 
 	// UPDATE all modules
 		update_status Update() {
-			for (int i = 0; i < NUM_MODULES; ++i)
+			for (int i = 0; i < NUM_MODULES; ++i) {
+				modules[i]->PreUpdate();
 				modules[i]->Update();
+				modules[i]->PostUpdate();
+			}
+			
 			return update_status::UPDATE_CONTINUE;
 		}
 	
