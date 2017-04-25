@@ -13,6 +13,8 @@
 #include "Enemy_RiffleMen.h"
 #include "Enemy_PowerUp.h"
 #include "Enemy_Barrel.h"
+#include "Enemy_GunMenJumper.h"
+#include "Enemy_GunMenBalcony.h"
 
 #define SPAWN_MARGIN 70
 
@@ -40,12 +42,38 @@ update_status ModuleEnemies::PreUpdate()
 	// check camera position to decide what to spawn
 	for(uint i = 0; i < MAX_ENEMIES; ++i)
 	{
-		if(queue[i].type != ENEMY_TYPES::NO_TYPE)
+		if (queue[i].type != ENEMY_TYPES::NO_TYPE)
 		{
-			if (queue[i].y>(abs(App->render->camera.y) / SCREEN_SIZE) - SPAWN_MARGIN)
+			if ((queue[i].type == ENEMY_TYPES::GUNMEN)
+				|| (queue[i].type == ENEMY_TYPES::BARREL)
+				|| (queue[i].type == ENEMY_TYPES::BOMBER)
+				|| (queue[i].type == ENEMY_TYPES::RIFFLEMEN)
+				|| (queue[i].type == ENEMY_TYPES::GUNMEN)
+				|| (queue[i].type == ENEMY_TYPES::GUNMENBALCONY))
 			{
-				SpawnEnemy(queue[i]);
-				queue[i].type = ENEMY_TYPES::NO_TYPE;
+				if (queue[i].y > (abs(App->render->camera.y) / SCREEN_SIZE) - SPAWN_MARGIN)
+				{
+					SpawnEnemy(queue[i]);
+					queue[i].type = ENEMY_TYPES::NO_TYPE;
+				}
+			}
+			if ((queue[i].type == ENEMY_TYPES::BACKSTABBER)
+				|| (queue[i].type == ENEMY_TYPES::GUNMENJUMPER))
+			{
+				if (queue[i].y > (abs(App->render->camera.y) / SCREEN_SIZE) + 70)
+				{
+					SpawnEnemy(queue[i]);
+					queue[i].type = ENEMY_TYPES::NO_TYPE;
+				}
+			}
+			if ((queue[i].type == ENEMY_TYPES::WINDOWSNIPERLEFT)
+				|| (queue[i].type == ENEMY_TYPES::WINDOWSNIPERRIGHT))
+			{
+				if (queue[i].y > (abs(App->render->camera.y) / SCREEN_SIZE) + 20)
+				{
+					SpawnEnemy(queue[i]);
+					queue[i].type = ENEMY_TYPES::NO_TYPE;
+				}
 			}
 		}
 	}
@@ -159,6 +187,14 @@ void ModuleEnemies::SpawnEnemy(const EnemyInfo& info)
 			enemies[i] = new Enemy_Barrel(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::BARREL;
 			break;
+			case ENEMY_TYPES::GUNMENJUMPER:
+				enemies[i] = new Enemy_GunMenJumper(info.x, info.y);
+				enemies[i]->type = ENEMY_TYPES::GUNMENJUMPER;
+				break;
+			case ENEMY_TYPES::GUNMENBALCONY:
+				enemies[i] = new Enemy_GunMenBalcony(info.x, info.y);
+				enemies[i]->type = ENEMY_TYPES::GUNMENBALCONY;
+				break;
 			/*case ENEMY_TYPES::POWERUP:
 				enemies[i] = new Enemy_PowerUp(info.x, info.y);
 			enemies[i]->type = ENEMY_TYPES::POWERUP;
